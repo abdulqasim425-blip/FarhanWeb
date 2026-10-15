@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useApp } from "../Appcontext";
+import { useApp } from "../../context/AppContext";
 
 export default function Profile() {
   const { profile } = useApp();

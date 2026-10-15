@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApp } from "../Appcontext";
+import { useApp } from "../../context/AppContext";
 
 const themes = [
   { id: "dark", label: "Dark", colors: ["#0f0f1e", "#1a1a2e", "#6366f1"] },

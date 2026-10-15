@@ -1,5 +1,5 @@
 import { stats } from "./data";
-import { useApp } from "./Appcontext";
+import { useApp } from "../context/AppContext";
 import Motion from "./Motion";
 
 export default function Hero() {

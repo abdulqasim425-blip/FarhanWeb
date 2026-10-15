@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useApp } from "../context/AppContext";
+import { useApp } from "../../context/AppContext";
 
 const languages = [
   { code: "en", name: "English", flag: "🇬🇧", region: "United Kingdom" },

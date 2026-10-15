@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "@formspree/react";
-import { useApp } from "./Appcontext";
+import { useApp } from "../context/AppContext";
 import Motion from "./Motion";
 
 const FORM_ID = import.meta.env.VITE_FORMSPREE_ID;

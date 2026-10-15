@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useApp } from "../Appcontext";
+import { useApp } from "../../context/AppContext";
 
 export default function EditProfile() {
   const { profile, setProfile } = useApp();

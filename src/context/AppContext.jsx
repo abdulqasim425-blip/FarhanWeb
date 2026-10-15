@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { profile as defaultProfile } from "./data";
+import { profile as defaultProfile } from "../components/data";
 import { translations } from "../i18n/translations";
 
 const AppContext = createContext();
@@ -57,7 +57,6 @@ export function AppProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem("language", language);
-    // RTL support for Arabic/Urdu
     document.documentElement.setAttribute(
       "dir",
       language === "ar" || language === "ur" ? "rtl" : "ltr",
