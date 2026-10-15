@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+build/
+
+# Environment variables (keep secrets and form IDs out of git)
+.env
+.env.local
+.env.*.local
+.env.example
+# .env.example is meant to be committed
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cache and coverage
+.cache/
+.vite/
+.eslintcache
+coverage/
+*.tsbuildinfo
+
+# Deploy tool folders
+.vercel/
+.netlify/
