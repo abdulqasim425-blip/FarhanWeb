@@ -14,7 +14,6 @@ export default function Profile() {
       }}
     >
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        {/* Header */}
         <h1
           style={{
             fontSize: "2rem",
@@ -31,7 +30,7 @@ export default function Profile() {
           Manage your personal information
         </p>
 
-        {/* Profile Card */}
+        {/* Profile card */}
         <div
           style={{
             background: "#151d38",
@@ -66,6 +65,7 @@ export default function Profile() {
             >
               {profile.name?.charAt(0) || "U"}
             </div>
+
             <div style={{ flex: 1, minWidth: 200 }}>
               <h2
                 style={{
@@ -90,6 +90,7 @@ export default function Profile() {
                 {profile.location}
               </p>
             </div>
+
             <Link
               to="/profile/edit"
               style={{
@@ -108,9 +109,13 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Info Grid */}
+        {/* Info grid */}
         <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 16,
+          }}
         >
           <InfoBox label="Full Name" value={profile.name} />
           <InfoBox label="Email" value={profile.email} />

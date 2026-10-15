@@ -1,44 +1,35 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { profile as defaultProfile } from "./data";
+import { translations } from "../i18n/translations";
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  // ---- Profile ----
   const [profile, setProfile] = useState(() => {
     const stored = localStorage.getItem("profile");
     if (stored) {
       try {
         return { ...defaultProfile, ...JSON.parse(stored) };
-      } catch {
-        /* ignore */
-      }
+      } catch {}
     }
     return defaultProfile;
   });
 
-  // ---- Appearance ----
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark",
   );
   const [accent, setAccent] = useState(
-    () => localStorage.getItem("accent") || "#6366f1",
+    () => localStorage.getItem("accent") || "#6d7cff",
   );
-
-  // ---- Language ----
   const [language, setLanguage] = useState(
     () => localStorage.getItem("language") || "en",
   );
-
-  // ---- Payment Cards ----
   const [cards, setCards] = useState(() => {
     const stored = localStorage.getItem("paymentCards");
     if (stored) {
       try {
         return JSON.parse(stored);
-      } catch {
-        /* ignore */
-      }
+      } catch {}
     }
     return [
       { id: 1, brand: "Visa", last4: "4242", exp: "12/26", default: true },
@@ -52,7 +43,7 @@ export function AppProvider({ children }) {
     ];
   });
 
-  // ---- Apply theme & accent to <html> whenever they change ----
+  // Apply theme + accent
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.style.setProperty("--accent", accent);
@@ -60,33 +51,48 @@ export function AppProvider({ children }) {
     localStorage.setItem("accent", accent);
   }, [theme, accent]);
 
-  // ---- Persist everything on change ----
   useEffect(() => {
     localStorage.setItem("profile", JSON.stringify(profile));
   }, [profile]);
 
   useEffect(() => {
     localStorage.setItem("language", language);
+    // RTL support for Arabic/Urdu
+    document.documentElement.setAttribute(
+      "dir",
+      language === "ar" || language === "ur" ? "rtl" : "ltr",
+    );
+    document.documentElement.setAttribute("lang", language);
   }, [language]);
 
   useEffect(() => {
     localStorage.setItem("paymentCards", JSON.stringify(cards));
   }, [cards]);
 
-  const value = {
-    profile,
-    setProfile,
-    theme,
-    setTheme,
-    accent,
-    setAccent,
-    language,
-    setLanguage,
-    cards,
-    setCards,
+  // Translation function
+  const t = (key) => {
+    return translations[language]?.[key] || translations.en[key] || key;
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider
+      value={{
+        profile,
+        setProfile,
+        theme,
+        setTheme,
+        accent,
+        setAccent,
+        language,
+        setLanguage,
+        cards,
+        setCards,
+        t,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 }
 
 export function useApp() {
