@@ -5,6 +5,7 @@ node_modules/
 dist/
 dist-ssr/
 build/
+pages.css
 
 # Environment variables (keep secrets and form IDs out of git)
 .env
