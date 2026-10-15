@@ -1,7 +1,10 @@
-import { profile, stats } from "./data.js";
-import Motion from "./Motion.jsx";
+import { stats } from "./data";
+import { useApp } from "./Appcontext";
+import Motion from "./Motion";
 
 export default function Hero() {
+  const { profile } = useApp();
+
   return (
     <section className="hero" id="top">
       <div className="container hero__inner">
@@ -52,6 +55,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      <Motion />
     </section>
   );
 }

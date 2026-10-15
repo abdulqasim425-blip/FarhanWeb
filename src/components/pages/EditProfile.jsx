@@ -1,39 +1,24 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { profile as defaultProfile } from "../data";
+import { useApp } from "../Appcontext";
 
 export default function EditProfile() {
+  const { profile, setProfile } = useApp();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState(() => {
-    const stored = localStorage.getItem("profile");
-    if (stored) {
-      try {
-        return { ...defaultProfile, ...JSON.parse(stored), bio: "" };
-      } catch {
-        /* ignore */
-      }
-    }
-    return {
-      name: defaultProfile.name || "",
-      email: defaultProfile.email || "",
-      location: defaultProfile.location || "",
-      tagline: defaultProfile.tagline || "",
-      bio: "",
-    };
+  const [form, setForm] = useState({
+    name: profile.name || "",
+    email: profile.email || "",
+    location: profile.location || "",
+    tagline: profile.tagline || "",
   });
-
   const [saved, setSaved] = useState(false);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const submit = (e) => {
     e.preventDefault();
-
-    // Save to localStorage (bio is excluded to keep shape clean, or include if you want)
-    const { bio, ...persisted } = form;
-    localStorage.setItem("profile", JSON.stringify(persisted));
-
+    setProfile({ ...profile, ...form });
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
@@ -65,18 +50,6 @@ export default function EditProfile() {
               />
             </div>
           ))}
-
-          <div>
-            <label className="label block">Bio</label>
-            <textarea
-              name="bio"
-              rows="4"
-              value={form.bio}
-              onChange={change}
-              className="input"
-              placeholder="Tell us about yourself..."
-            />
-          </div>
 
           <div className="form-actions">
             <button type="submit" className="btn btn--primary">

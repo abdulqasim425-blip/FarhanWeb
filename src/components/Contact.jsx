@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useForm } from "@formspree/react";
-import { profile } from "./data.js";
+import { useApp } from "./Appcontext";
+import Motion from "./Motion";
 
-// Your Formspree form ID: the last part of https://formspree.io/f/abcdwxyz  ->  abcdwxyz
-// Set it in a .env file as VITE_FORMSPREE_ID (see .env.example).
 const FORM_ID = import.meta.env.VITE_FORMSPREE_ID;
 
 export default function Contact() {
+  const { profile } = useApp();
   const [state, sendToFormspree] = useForm(FORM_ID || "not-configured");
   const [form, setForm] = useState({
     name: "",
@@ -34,7 +34,6 @@ export default function Contact() {
     setErrors(err);
     if (Object.keys(err).length) return;
 
-    // Formspree not configured yet: fall back to the visitor's email app.
     if (!FORM_ID) {
       const subject = encodeURIComponent(`Project enquiry from ${form.name}`);
       const body = encodeURIComponent(
@@ -45,7 +44,6 @@ export default function Contact() {
       return;
     }
 
-    // The package reads the form fields (including the hidden _gotcha spam trap) and posts them.
     sendToFormspree(e);
   };
 
@@ -77,7 +75,7 @@ export default function Contact() {
       <div className="container contact">
         <div className="contact__info">
           <span className="eyebrow">Contact</span>
-          <h2>Let’s build something great</h2>
+          <h2>Let's build something great</h2>
           <p>Tell me about your project and I will reply within 24 hours.</p>
           <ul className="contact__list">
             <li>
@@ -90,7 +88,7 @@ export default function Contact() {
             </li>
           </ul>
           <div className="socials">
-            {profile.socials.map((s) => (
+            {profile.socials?.map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noreferrer">
                 {s.label}
               </a>
@@ -142,7 +140,6 @@ export default function Contact() {
             {errors.message && <small className="err">{errors.message}</small>}
           </label>
 
-          {/* Spam trap: hidden from real visitors, bots fill it and Formspree discards the message. */}
           <input
             type="text"
             name="_gotcha"
@@ -175,6 +172,7 @@ export default function Contact() {
           )}
         </form>
       </div>
+      <Motion />
     </section>
   );
 }

@@ -20,12 +20,6 @@ import Help from "./components/pages/Help";
 import Report from "./components/pages/Report";
 
 function HomePage() {
-  useEffect(() => {
-    const theme = localStorage.getItem("theme") || "dark";
-    const accent = localStorage.getItem("accent") || "#6366f1";
-    document.documentElement.setAttribute("data-theme", theme);
-    document.documentElement.style.setProperty("--accent", accent);
-  }, []);
   return (
     <>
       <Hero />

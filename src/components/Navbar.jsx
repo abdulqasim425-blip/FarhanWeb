@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { profile } from "./data.js";
+import { useApp } from "./Appcontext";
 
 const links = [
-  ["Services", "#services"],
-  ["Work", "#work"],
-  ["Process", "#process"],
-  ["Pricing", "#pricing"],
-  ["Contact", "#contact"],
+  ["Services", "/#services"],
+  ["Work", "/#work"],
+  ["Process", "/#process"],
+  ["Pricing", "/#pricing"],
+  ["Contact", "/#contact"],
 ];
 
 const accountMenu = [
@@ -44,6 +44,7 @@ const accountMenu = [
 ];
 
 export default function Navbar() {
+  const { profile } = useApp();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -149,7 +150,10 @@ export default function Navbar() {
                 <hr />
                 <button
                   className="account-dropdown__logout"
-                  onClick={() => setAccountOpen(false)}
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.reload();
+                  }}
                 >
                   <span className="account-dropdown__icon">🚪</span> Log out
                 </button>
@@ -158,7 +162,7 @@ export default function Navbar() {
           </div>
 
           <a
-            href="#contact"
+            href="/#contact"
             className="btn btn--small"
             onClick={() => setOpen(false)}
           >

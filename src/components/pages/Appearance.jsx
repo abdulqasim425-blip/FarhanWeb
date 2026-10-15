@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useApp } from "../Appcontext";
 
 const themes = [
   { id: "dark", label: "Dark", colors: ["#0f0f1e", "#1a1a2e", "#6366f1"] },
@@ -12,22 +13,10 @@ const themes = [
 ];
 
 export default function Appearance() {
-  const [theme, setTheme] = useState("dark");
-  const [accent, setAccent] = useState("#6366f1");
+  const { theme, setTheme, accent, setAccent } = useApp();
   const [saved, setSaved] = useState(false);
 
-  // Load saved values on page load
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const savedAccent = localStorage.getItem("accent");
-    if (savedTheme) setTheme(savedTheme);
-    if (savedAccent) setAccent(savedAccent);
-  }, []);
-
   const saveSettings = () => {
-    localStorage.setItem("theme", theme);
-    localStorage.setItem("accent", accent);
-    document.documentElement.setAttribute("data-theme", theme);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -88,7 +77,9 @@ export default function Appearance() {
           <button onClick={saveSettings} className="btn btn--primary">
             Save Preferences
           </button>
-          {saved && <span className="success-text">✓ Saved successfully!</span>}
+          {saved && (
+            <span className="success-text">✓ Applied to whole site!</span>
+          )}
         </div>
       </div>
     </div>

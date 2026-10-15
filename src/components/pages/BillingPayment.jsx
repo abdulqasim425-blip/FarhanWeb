@@ -1,31 +1,10 @@
-import { useState, useEffect } from "react";
-
-const defaultCards = [
-  { id: 1, brand: "Visa", last4: "4242", exp: "12/26", default: true },
-  { id: 2, brand: "Mastercard", last4: "8888", exp: "08/27", default: false },
-];
+import { useState } from "react";
+import { useApp } from "../Appcontext";
 
 export default function BillingPayment() {
-  const [cards, setCards] = useState(defaultCards);
+  const { cards, setCards } = useApp();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ number: "", name: "", exp: "", cvc: "" });
-
-  // Load from localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem("paymentCards");
-    if (stored) {
-      try {
-        setCards(JSON.parse(stored));
-      } catch {
-        /* ignore */
-      }
-    }
-  }, []);
-
-  // Persist whenever cards change
-  useEffect(() => {
-    localStorage.setItem("paymentCards", JSON.stringify(cards));
-  }, [cards]);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
