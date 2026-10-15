@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { projects } from '../data.js'
+import { useState } from "react";
+import { projects } from "./data.js";
 
 export default function Work() {
-  const tags = ['All', ...new Set(projects.map((p) => p.tag))]
-  const [active, setActive] = useState('All')
-  const shown = active === 'All' ? projects : projects.filter((p) => p.tag === active)
+  const tags = ["All", ...new Set(projects.map((p) => p.tag))];
+  const [active, setActive] = useState("All");
+  const shown =
+    active === "All" ? projects : projects.filter((p) => p.tag === active);
 
   return (
     <section className="section section--alt" id="work">
@@ -12,13 +13,16 @@ export default function Work() {
         <div className="section__head">
           <span className="eyebrow">Portfolio</span>
           <h2>Recent work</h2>
-          <p>A selection of projects. Replace these with your own in <code>src/data.js</code>.</p>
+          <p>
+            A selection of projects. Replace these with your own in{" "}
+            <code>src/data.js</code>.
+          </p>
         </div>
         <div className="filters">
           {tags.map((t) => (
             <button
               key={t}
-              className={`chip ${active === t ? 'chip--active' : ''}`}
+              className={`chip ${active === t ? "chip--active" : ""}`}
               onClick={() => setActive(t)}
             >
               {t}
@@ -36,7 +40,9 @@ export default function Work() {
                 <h3>{p.title}</h3>
                 <p>{p.text}</p>
                 <ul className="tags">
-                  {p.stack.map((s) => <li key={s}>{s}</li>)}
+                  {p.stack.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
                 </ul>
               </div>
             </article>
@@ -44,5 +50,5 @@ export default function Work() {
         </div>
       </div>
     </section>
-  )
+  );
 }

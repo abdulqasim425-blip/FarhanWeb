@@ -1,4 +1,5 @@
-import { profile, stats } from "../data.js";
+import { profile, stats } from "./data.js";
+import Motion from "./Motion.jsx";
 
 export default function Hero() {
   return (

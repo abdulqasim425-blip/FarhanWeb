@@ -1,4 +1,4 @@
-import { process } from '../data.js'
+import { process } from "./data.js";
 
 export default function Process() {
   return (
@@ -7,7 +7,9 @@ export default function Process() {
         <div className="section__head">
           <span className="eyebrow">How it works</span>
           <h2>A simple, transparent process</h2>
-          <p>No surprises. You always know what is happening and what comes next.</p>
+          <p>
+            No surprises. You always know what is happening and what comes next.
+          </p>
         </div>
         <ol className="steps">
           {process.map((p) => (
@@ -20,5 +22,5 @@ export default function Process() {
         </ol>
       </div>
     </section>
-  )
+  );
 }

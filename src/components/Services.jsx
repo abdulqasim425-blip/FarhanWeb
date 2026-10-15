@@ -1,4 +1,4 @@
-import { services } from '../data.js'
+import { services } from "./data.js";
 
 export default function Services() {
   return (
@@ -7,7 +7,10 @@ export default function Services() {
         <div className="section__head">
           <span className="eyebrow">What I do</span>
           <h2>Services built around your goals</h2>
-          <p>From a simple business site to a full web application, here is how I can help.</p>
+          <p>
+            From a simple business site to a full web application, here is how I
+            can help.
+          </p>
         </div>
         <div className="grid grid--3">
           {services.map((s) => (
@@ -20,5 +23,5 @@ export default function Services() {
         </div>
       </div>
     </section>
-  )
+  );
 }
