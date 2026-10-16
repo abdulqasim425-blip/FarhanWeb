@@ -8,6 +8,8 @@ import Process from "./components/Process";
 import Pricing from "./components/Pricing";
 import Contact from "./components/Contact";
 
+import Login from "./components/pages/Login";
+import Signup from "./components/pages/Signup";
 import Profile from "./components/pages/Profile";
 import EditProfile from "./components/pages/EditProfile";
 import Settings from "./components/pages/Settings";
@@ -38,6 +40,12 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
+
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Account pages */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/settings" element={<Settings />} />

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { useAuth } from "../context/AuthContext";
 
 const navLinks = [
   ["nav.services", "/#services"],
@@ -45,6 +46,8 @@ const accountMenu = [
 
 export default function Navbar() {
   const { profile, t } = useApp();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate(); // ← YE LINE component ke andar sabse pehle
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -67,6 +70,13 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setAccountOpen(false);
+    setOpen(false);
+    navigate("/login"); // ← ab navigate yahan kaam karega
+  };
+
   return (
     <header className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="container nav__inner">
@@ -82,93 +92,111 @@ export default function Navbar() {
             </a>
           ))}
 
-          <div className="nav__account" ref={accountRef}>
-            <button
-              className="account-btn"
-              onClick={() => setAccountOpen(!accountOpen)}
-              aria-expanded={accountOpen}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+          {!user ? (
+            <>
+              <Link
+                to="/login"
+                className="nav__auth-link"
+                onClick={() => setOpen(false)}
               >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              <span>{t("nav.account")}</span>
-              <svg
-                className={`chevron ${accountOpen ? "is-open" : ""}`}
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="btn btn--small"
+                onClick={() => setOpen(false)}
               >
-                <path d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {accountOpen && (
-              <div className="account-dropdown">
-                <div className="account-dropdown__header">
-                  <div className="avatar avatar--sm">
-                    {profile.name?.charAt(0) || "U"}
-                  </div>
-                  <div>
-                    <strong>{profile.name}</strong>
-                    <small>{profile.email}</small>
-                  </div>
-                </div>
-                <hr />
-
-                {accountMenu.map((group, idx) => (
-                  <div key={idx} className="account-dropdown__group">
-                    <p className="account-dropdown__label">{group.group}</p>
-                    {group.items.map((item) => (
-                      <Link
-                        key={item.labelKey}
-                        to={item.to}
-                        onClick={() => setAccountOpen(false)}
-                        className="account-dropdown__link"
-                      >
-                        <span className="account-dropdown__icon">
-                          {item.icon}
-                        </span>
-                        {t(item.labelKey)}
-                      </Link>
-                    ))}
-                  </div>
-                ))}
-
-                <hr />
+                Sign up
+              </Link>
+            </>
+          ) : (
+            <>
+              <div className="nav__account" ref={accountRef}>
                 <button
-                  className="account-dropdown__logout"
-                  onClick={() => {
-                    localStorage.clear();
-                    window.location.reload();
-                  }}
+                  className="account-btn"
+                  onClick={() => setAccountOpen(!accountOpen)}
+                  aria-expanded={accountOpen}
                 >
-                  <span className="account-dropdown__icon">🚪</span>{" "}
-                  {t("nav.logout")}
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  <span>{user.name?.split(" ")[0] || "Account"}</span>
+                  <svg
+                    className={`chevron ${accountOpen ? "is-open" : ""}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
-              </div>
-            )}
-          </div>
 
-          <a
-            href="/#contact"
-            className="btn btn--small"
-            onClick={() => setOpen(false)}
-          >
-            {t("nav.hire")}
-          </a>
+                {accountOpen && (
+                  <div className="account-dropdown">
+                    <div className="account-dropdown__header">
+                      <div className="avatar avatar--sm">
+                        {user.name?.charAt(0) || "U"}
+                      </div>
+                      <div>
+                        <strong>{user.name}</strong>
+                        <small>{user.email}</small>
+                      </div>
+                    </div>
+                    <hr />
+
+                    {accountMenu.map((group, idx) => (
+                      <div key={idx} className="account-dropdown__group">
+                        <p className="account-dropdown__label">{group.group}</p>
+                        {group.items.map((item) => (
+                          <Link
+                            key={item.labelKey}
+                            to={item.to}
+                            onClick={() => setAccountOpen(false)}
+                            className="account-dropdown__link"
+                          >
+                            <span className="account-dropdown__icon">
+                              {item.icon}
+                            </span>
+                            {t(item.labelKey)}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+
+                    <hr />
+                    <button
+                      className="account-dropdown__logout"
+                      onClick={handleLogout}
+                    >
+                      <span className="account-dropdown__icon">🚪</span>{" "}
+                      {t("nav.logout")}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <a
+                href="/#contact"
+                className="btn btn--small"
+                onClick={() => setOpen(false)}
+              >
+                {t("nav.hire")}
+              </a>
+            </>
+          )}
         </nav>
 
         <button
